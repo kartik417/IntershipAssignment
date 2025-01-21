@@ -25,6 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.countermvvm.ui.theme.CounterMVVMTheme
 
 class MainActivity : ComponentActivity() {
@@ -32,29 +33,26 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val viewModel: CounterViewModel = viewModel()
             CounterMVVMTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
 
-                    MyCounterApp()
+                    MyCounterApp(viewModel)
                 }
             }
         }
     }
 }
 
-@Composable
-fun MyCounterApp() {
-    val count = remember { mutableStateOf(0) }
-    fun increment() {
-        count.value++
-    }
 
-    fun decrement() {
-        count.value--
-    }
+
+@Composable
+fun MyCounterApp(viewModel: CounterViewModel) {
+
+
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -62,17 +60,17 @@ fun MyCounterApp() {
 
         ) {
         Text(
-            "Count: ${count.value}",
+            "Count: ${viewModel.count.value}",
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold
         )
 
         Spacer(modifier = Modifier.height(16.dp))
         Row {
-            Button(onClick = { increment() }) {
+            Button(onClick = { viewModel.increment() }) {
                 Text(text = "Increment")
             }
-            Button(onClick = { decrement() }) {
+            Button(onClick = { viewModel.decrement() }) {
                 Text(text = "Decrement")
             }
         }
