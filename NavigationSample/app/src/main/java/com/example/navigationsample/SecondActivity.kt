@@ -1,6 +1,7 @@
 package com.example.navigationsample
 
-import android.content.Intent
+
+
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -20,18 +21,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.traceEventStart
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.content.ContextCompat.startActivity
 import com.example.navigationsample.ui.theme.NavigationSampleTheme
 
-class MainActivity : ComponentActivity() {
+class SecondActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -41,7 +39,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    FirstScreen()
+                    SecondScreen()
                 }
             }
         }
@@ -49,29 +47,24 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun FirstScreen(){
+fun SecondScreen(){
     val name = remember { mutableStateOf("") }
-    val context = LocalContext.current
     Column (
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ){
-        Text("This is First Screen",
+        Text("This is Second Screen",
             fontWeight = FontWeight.Bold,
             fontSize = 16.sp
         )
-        OutlinedTextField(value = name.value, onValueChange = {
-            name.value = it
-        })
+        Text("Welcome to Second Screen",
+            fontWeight = FontWeight.Bold,
+            fontSize = 24.sp)
         Button(onClick = {
 
-
-            val intent = Intent(context, SecondActivity::class.java)
-            
-
         }) {
-            Text("Click here to go to Second Screen")
+            Text("Click here to go to First Screen")
         }
     }
 }
