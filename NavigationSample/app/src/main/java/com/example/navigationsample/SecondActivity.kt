@@ -39,7 +39,7 @@ class SecondActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    SecondScreen()
+                    SecondScreen("James",{})
                 }
             }
         }
@@ -47,8 +47,8 @@ class SecondActivity : ComponentActivity() {
 }
 
 @Composable
-fun SecondScreen(){
-    val name = remember { mutableStateOf("") }
+fun SecondScreen(name:String, navigationToFirstScreen: (String) -> Unit){
+
     Column (
         modifier = Modifier.fillMaxSize(),
         verticalArrangement = Arrangement.Center,
@@ -58,11 +58,11 @@ fun SecondScreen(){
             fontWeight = FontWeight.Bold,
             fontSize = 16.sp
         )
-        Text("Welcome to Second Screen",
+        Text("Welcome to $name Second Screen",
             fontWeight = FontWeight.Bold,
             fontSize = 24.sp)
         Button(onClick = {
-
+            navigationToFirstScreen(name)
         }) {
             Text("Click here to go to First Screen")
         }

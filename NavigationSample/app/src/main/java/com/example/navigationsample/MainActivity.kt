@@ -29,6 +29,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat.startActivity
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.navigationsample.ui.theme.NavigationSampleTheme
 
 class MainActivity : ComponentActivity() {
@@ -41,7 +44,8 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    FirstScreen()
+
+                    MyApp()
                 }
             }
         }
@@ -49,7 +53,11 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun FirstScreen(){
+fun First(){
+    FirstScreen({})
+}
+@Composable
+fun FirstScreen(navigationToSecondScreen: (String) -> Unit){
     val name = remember { mutableStateOf("") }
     val context = LocalContext.current
     Column (
@@ -67,11 +75,29 @@ fun FirstScreen(){
         Button(onClick = {
 
 
-            val intent = Intent(context, SecondActivity::class.java)
-            
+            navigationToSecondScreen(name.value)
+
 
         }) {
             Text("Click here to go to Second Screen")
+        }
+    }
+}
+
+@Composable
+fun MyApp(){
+    val navController = rememberNavController()
+    NavHost(navController = navController, startDestination = "first"){
+        composable("first"){
+            FirstScreen{name->
+                navController.navigate("second/$name")
+            }
+        }
+        composable(route = "second/{name}"){
+            val name = it.arguments?.getString("name") ?: ""
+            SecondScreen(name){
+                navController.navigate("first")
+            }
         }
     }
 }
